@@ -419,15 +419,16 @@ library(doParallel)        # for parallel processing
 library(stacks)            # for stacking models  
 library(lubridate)         # for date manipulation  
 library(vip)               # for variable importance plots  
+library(themis) 
 
 
 3. You'll want the user to be able to choose values for each variable in the model. How will you come up with the values they can choose for quantitative and categorical data? Give one example for each, either using code or in words.  
 
-> For quantitative data, I can give them a range to choose from, probably using sliderInput(). For categorical data, I probably will give them options by using selectInput(). 
+> For quantitative data, I can give them a range to choose from, for example the 50% data in the middle, probably using sliderInput(). For categorical data, I probably will give them options by using selectInput(). 
 
 4. You will need to populate each variable with an initial value. Which value will you choose? Is there a nice way to do this programatically (ie. with code)?
 
-> I will probably choose the mean of each variable. 
+> I will probably choose the mean of each quantitative variable and for categorical variable, I will see which classes are more dominant in the dataset.
 
 ```{r}
 lending_club %>% 
@@ -439,6 +440,15 @@ lending_club %>%
   summarise(avg = mean(value))
 ```
 
+```{r}
+lending_club %>% 
+  select(where(is.factor)) %>% 
+  pivot_longer(cols = everything(),
+               names_to = "variable", 
+               values_to = "value") %>% 
+  group_by(variable,value) %>% 
+  count()
+```
 
 ## Function Friday problems
 
@@ -448,6 +458,7 @@ I will link to these separately. They will be posted by Tuesday.
 
 We will be watching some of the [Coded Bias](https://www.codedbias.com/) film together on Thursday. It is streaming on Netflix. Write a short reflection. If you want some prompts, reflect on: What part of the film impacted you the most? Was there a part that surprised you and why? What emotions did you experience while watching?
 
+> The part that the police use AI to detect potential criminals impacted me the most. Seeing an innocent 14-years-old boy being stopped by police makes me feel very sad and I'm surprised that people will be fined if they cover their faces, which is a decision supported by human rights. Watching this film makes me think about more ethical aspects of AI and I'm happy that the team in the film made some progress in the end! 
 
 REMEMBER TO ADD YOUR GITHUB LINK AT THE TOP OF THE PAGE AND UNCOMMENT THE `knitr` OPTIONS.
 
