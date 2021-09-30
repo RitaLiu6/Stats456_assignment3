@@ -315,6 +315,7 @@ boost_tune %>%
 12. Create a model stack with the candidate models from the previous parts of the exercise and use the `blend_predictions()` function to find the coefficients of the stacked model. Create a plot examining the performance metrics for the different penalty parameters to assure you have captured the best one. If not, adjust the penalty. (HINT: use the `autoplot()` function). Which models are contributing most?
 
 ```{r}
+set.seed(494)
 lending_stack <- 
   stacks() %>% 
   add_candidates(rf_tune) %>% 
@@ -323,14 +324,16 @@ lending_stack <-
 ```
 
 ```{r}
+set.seed(494)
 lending_blend <-
   lending_stack %>% 
   blend_predictions()
 
 autoplot(lending_blend,type = "weights")
+autoplot(lending_blend)
 ```
 
-> In my model, boosting is contributing the most.  
+> In my model, boosting is contributing the most.  Also, from the plot, I think I captured the best one. 
 
 13. Fit the final stacked model using `fit_members()`. Apply the model to the training data. Compute the accuracy, construct a confusion matrix, and create a density plot with `.pred_good` on the x-axis (the probability of a response of "good"), filled by `Class`. Comment on what you see. 
 
